@@ -1,5 +1,17 @@
 // Mock data for the PG Prioritization Command Center
 
+export interface StakeholderTarget {
+  name: string
+  title: string
+  linkedIn: string
+}
+
+export interface AccountPov {
+  whyAnything: string
+  whyNow: string
+  whyCursor: string
+}
+
 export interface Account {
   id: string
   name: string
@@ -20,13 +32,10 @@ export interface Account {
     funding: string
     techStack: string[]
     recentNews: string[]
-    champions: {
-      name: string
-      title: string
-      linkedIn: string
-    }[]
+    stakeholderTargets: StakeholderTarget[]
     discoveryQuestions: string[]
     battleNotes: string
+    pov: AccountPov
   }
 }
 
@@ -43,7 +52,7 @@ export const defaultWeights: CriteriaWeight[] = [
   { id: 'toolingStack', label: 'Current Tooling Stack', shortLabel: 'Stack', weight: 15 },
   { id: 'fundingRecency', label: 'Funding Recency', shortLabel: 'Fund', weight: 10 },
   { id: 'developerVelocity', label: 'Developer Velocity Culture', shortLabel: 'Velocity', weight: 15 },
-  { id: 'championAccessibility', label: 'Champion Accessibility', shortLabel: 'Champ', weight: 15 },
+  { id: 'championAccessibility', label: 'Stakeholder Accessibility', shortLabel: 'Access', weight: 15 },
   { id: 'expansionPotential', label: 'Expansion Potential', shortLabel: 'Expand', weight: 10 },
 ]
 
@@ -72,9 +81,12 @@ export const mockAccounts: Account[] = [
         'Announced $2B investment from Google',
         'Expanding engineering team by 40%',
       ],
-      champions: [
+      stakeholderTargets: [
         { name: 'Sarah Chen', title: 'VP of Engineering', linkedIn: 'linkedin.com/in/sarahchen' },
-        { name: 'Marcus Webb', title: 'Staff Engineer', linkedIn: 'linkedin.com/in/marcuswebb' },
+        { name: 'Marcus Webb', title: 'Staff Engineer, Platform', linkedIn: 'linkedin.com/in/marcuswebb' },
+        { name: 'Priya Nair', title: 'Director of Developer Experience', linkedIn: 'linkedin.com/in/priyanair' },
+        { name: 'James Okonkwo', title: 'Head of AI Infrastructure', linkedIn: 'linkedin.com/in/jokonkwo' },
+        { name: 'Elena Vasquez', title: 'Engineering Manager, Research Tools', linkedIn: 'linkedin.com/in/evasquez' },
       ],
       discoveryQuestions: [
         'How is your team currently managing code review velocity?',
@@ -82,6 +94,14 @@ export const mockAccounts: Account[] = [
         'How do you onboard new engineers to your codebase?',
       ],
       battleNotes: 'Strong VS Code users. Focus on AI-assisted debugging and context window advantages.',
+      pov: {
+        whyAnything:
+          'Anthropic runs one of the most sophisticated AI research engineering orgs in the world — tooling friction directly slows model iteration and safety work.',
+        whyNow:
+          '40% eng hiring surge + Claude product velocity means teams are feeling IDE and review bottlenecks now, not next quarter.',
+        whyCursor:
+          'Cursor gives codebase-wide AI context in a familiar VS Code fork — ideal for large Python/ML monorepos where Copilot falls short on multi-file refactors.',
+      },
     },
   },
   {
@@ -108,9 +128,12 @@ export const mockAccounts: Account[] = [
         'Acquired Lemon Squeezy for indie developer market',
         'Opening new engineering hub in Toronto',
       ],
-      champions: [
+      stakeholderTargets: [
         { name: 'David Singleton', title: 'CTO', linkedIn: 'linkedin.com/in/davidsingleton' },
         { name: 'Cristina Cordova', title: 'Head of Platform', linkedIn: 'linkedin.com/in/cristinacordova' },
+        { name: 'Alex Kim', title: 'VP Developer Productivity', linkedIn: 'linkedin.com/in/alexkim' },
+        { name: 'Jordan Lee', title: 'Director, Internal Tools', linkedIn: 'linkedin.com/in/jordanlee' },
+        { name: 'Samira Patel', title: 'Staff Engineer, Developer Experience', linkedIn: 'linkedin.com/in/samirapatel' },
       ],
       discoveryQuestions: [
         'How does your platform team evaluate new developer tools?',
@@ -118,6 +141,14 @@ export const mockAccounts: Account[] = [
         'How do you handle multi-language codebase navigation?',
       ],
       battleNotes: 'Very metrics-driven. Need hard ROI data. Focus on productivity gains across large teams.',
+      pov: {
+        whyAnything:
+          'Stripe’s competitive edge is shipping speed across Ruby, Go, and frontend — even small per-engineer gains compound across 8,000+ developers.',
+        whyNow:
+          'New Toronto hub + AI assistant launch signal a renewed push on developer productivity metrics this fiscal year.',
+        whyCursor:
+          'Cursor’s agent mode and multi-file edits map directly to Stripe’s PR cycle time KPIs — easier to pilot than another JetBrains seat expansion.',
+      },
     },
   },
   {
@@ -144,9 +175,12 @@ export const mockAccounts: Account[] = [
         'Next.js 15 released with improved performance',
         'Announced Vercel AI SDK 4.0',
       ],
-      champions: [
+      stakeholderTargets: [
         { name: 'Guillermo Rauch', title: 'CEO', linkedIn: 'linkedin.com/in/guillermo' },
         { name: 'Lee Robinson', title: 'VP of Product', linkedIn: 'linkedin.com/in/leerobinson' },
+        { name: 'Malte Ubl', title: 'VP Engineering', linkedIn: 'linkedin.com/in/malteubl' },
+        { name: 'Cassidy Williams', title: 'Director, Developer Relations', linkedIn: 'linkedin.com/in/cassidoo' },
+        { name: 'Tobias Koppers', title: 'Head of Frameworks', linkedIn: 'linkedin.com/in/tobiaskoppers' },
       ],
       discoveryQuestions: [
         'How is your team using AI in the development workflow today?',
@@ -154,6 +188,14 @@ export const mockAccounts: Account[] = [
         'How do you see AI-assisted coding evolving for frontend development?',
       ],
       battleNotes: 'Already building AI tools. Partnership angle might be stronger than pure sales.',
+      pov: {
+        whyAnything:
+          'Vercel builds the tools developers use — their own eng team is the ultimate reference customer for AI-native workflows.',
+        whyNow:
+          'v0 and AI SDK launches mean internal teams are dogfooding AI codegen — perfect moment to compare IDE-level vs app-level AI.',
+        whyCursor:
+          'Position Cursor as complementary: v0 for greenfield UI, Cursor for day-to-day Next.js/TS work across the monorepo.',
+      },
     },
   },
   {
@@ -180,8 +222,12 @@ export const mockAccounts: Account[] = [
         'Launched Databricks Assistant AI',
         'Expanding MLOps platform capabilities',
       ],
-      champions: [
+      stakeholderTargets: [
         { name: 'Matei Zaharia', title: 'CTO', linkedIn: 'linkedin.com/in/mateizaharia' },
+        { name: 'Brooke Wenig', title: 'Director, ML Practice', linkedIn: 'linkedin.com/in/brookewenig' },
+        { name: 'Reynold Xin', title: 'Co-founder & Chief Architect', linkedIn: 'linkedin.com/in/reynoldxin' },
+        { name: 'Nate Freeman', title: 'VP Platform Engineering', linkedIn: 'linkedin.com/in/natefreeman' },
+        { name: 'Diana Torres', title: 'Engineering Manager, Data Platform', linkedIn: 'linkedin.com/in/dianatorres' },
       ],
       discoveryQuestions: [
         'How do your data engineers currently navigate large Spark codebases?',
@@ -189,6 +235,14 @@ export const mockAccounts: Account[] = [
         'How do you handle context switching between Python and Scala?',
       ],
       battleNotes: 'Heavy JetBrains users historically. Focus on AI code understanding for complex data pipelines.',
+      pov: {
+        whyAnything:
+          'Databricks engineers navigate massive Scala/Python Spark codebases — context-aware AI reduces ramp time and pipeline bugs.',
+        whyNow:
+          'Post-MosaicML integration, teams are merging ML and platform codebases under tight release pressure.',
+        whyCursor:
+          'Cursor excels at cross-language navigation (Scala ↔ Python) without per-language IDE licensing — strong wedge vs JetBrains sprawl.',
+      },
     },
   },
   {
@@ -215,8 +269,12 @@ export const mockAccounts: Account[] = [
         'Acquired Cron calendar app',
         'Expanding into enterprise market',
       ],
-      champions: [
+      stakeholderTargets: [
         { name: 'Ivan Zhao', title: 'CEO', linkedIn: 'linkedin.com/in/ivanzhao' },
+        { name: 'Simon Last', title: 'Co-founder & CTO', linkedIn: 'linkedin.com/in/simonlast' },
+        { name: 'Akshay Kothari', title: 'COO', linkedIn: 'linkedin.com/in/akshaykothari' },
+        { name: 'Rachel Kim', title: 'Director of Engineering', linkedIn: 'linkedin.com/in/rachelkim' },
+        { name: 'Tomás Barreiro', title: 'Staff Engineer, Editor Platform', linkedIn: 'linkedin.com/in/tbarreiro' },
       ],
       discoveryQuestions: [
         'How large is your engineering organization currently?',
@@ -224,6 +282,14 @@ export const mockAccounts: Account[] = [
         'How do you evaluate new engineering tools?',
       ],
       battleNotes: 'Smaller engineering team, but high-quality bar. Need to reach right technical decision maker.',
+      pov: {
+        whyAnything:
+          'Notion’s editor and AI features demand a high-velocity TS/React eng culture — quality per engineer matters more than headcount.',
+        whyNow:
+          'Enterprise push + Notion AI means eng is shipping faster with tighter quality bars — tooling upgrades are on the table.',
+        whyCursor:
+          'Cursor helps a lean team punch above its weight on complex editor refactors and cross-repo TypeScript work.',
+      },
     },
   },
 ]
@@ -231,18 +297,18 @@ export const mockAccounts: Account[] = [
 export function calculateTotalScore(account: Account, weights: CriteriaWeight[]): number {
   const weightMap = weights.reduce((acc, w) => ({ ...acc, [w.id]: w.weight }), {} as Record<string, number>)
   const totalWeight = weights.reduce((sum, w) => sum + w.weight, 0)
-  
+
   if (totalWeight === 0) return 0
-  
-  const weightedSum = 
-    (account.scores.engineeringHeadcount * (weightMap.engineeringHeadcount || 0)) +
-    (account.scores.aiMlInvestment * (weightMap.aiMlInvestment || 0)) +
-    (account.scores.toolingStack * (weightMap.toolingStack || 0)) +
-    (account.scores.fundingRecency * (weightMap.fundingRecency || 0)) +
-    (account.scores.developerVelocity * (weightMap.developerVelocity || 0)) +
-    (account.scores.championAccessibility * (weightMap.championAccessibility || 0)) +
-    (account.scores.expansionPotential * (weightMap.expansionPotential || 0))
-  
+
+  const weightedSum =
+    account.scores.engineeringHeadcount * (weightMap.engineeringHeadcount || 0) +
+    account.scores.aiMlInvestment * (weightMap.aiMlInvestment || 0) +
+    account.scores.toolingStack * (weightMap.toolingStack || 0) +
+    account.scores.fundingRecency * (weightMap.fundingRecency || 0) +
+    account.scores.developerVelocity * (weightMap.developerVelocity || 0) +
+    account.scores.championAccessibility * (weightMap.championAccessibility || 0) +
+    account.scores.expansionPotential * (weightMap.expansionPotential || 0)
+
   return Math.round(weightedSum / totalWeight)
 }
 
@@ -250,10 +316,10 @@ export const icpCriteria = [
   {
     category: 'Firmographics',
     items: [
-      { label: 'Engineering Headcount', ideal: '100+ engineers', weight: 'High' },
+      { label: 'Engineering Headcount', ideal: '1,000+ engineers', weight: 'High' },
       { label: 'Company Stage', ideal: 'Series B+ or Enterprise', weight: 'High' },
       { label: 'Industry', ideal: 'Tech, FinTech, AI/ML', weight: 'Medium' },
-    ]
+    ],
   },
   {
     category: 'Technographics',
@@ -261,7 +327,7 @@ export const icpCriteria = [
       { label: 'Primary Languages', ideal: 'TypeScript, Python, Go, Rust', weight: 'High' },
       { label: 'Current IDE', ideal: 'VS Code (easier migration)', weight: 'Medium' },
       { label: 'AI Investment', ideal: 'Active AI/ML initiatives', weight: 'High' },
-    ]
+    ],
   },
   {
     category: 'Behavioral Signals',
@@ -269,22 +335,31 @@ export const icpCriteria = [
       { label: 'Developer Velocity', ideal: 'Fast shipping culture', weight: 'High' },
       { label: 'Tool Adoption', ideal: 'Early adopter mentality', weight: 'Medium' },
       { label: 'Budget Authority', ideal: 'Decentralized tool decisions', weight: 'Medium' },
-    ]
+    ],
   },
 ]
 
 export const battleCards = [
   {
-    competitor: 'VS Code',
-    positioning: 'The foundation we build upon',
-    strengths: ['Free', 'Massive extension ecosystem', 'Familiar to most developers'],
-    weaknesses: ['AI features require multiple extensions', 'No native AI context understanding', 'Copilot is completion-focused only'],
-    counterPoints: [
-      'Cursor is VS Code + native AI superpowers',
-      'One integrated experience vs. cobbling together extensions',
-      'Context-aware AI that understands your entire codebase',
+    competitor: 'Claude Code',
+    positioning: 'Terminal agent vs. IDE-native workflow',
+    strengths: [
+      'Strong reasoning for complex tasks',
+      'Deep Anthropic model integration',
+      'Appeals to CLI-first engineers',
     ],
-    winStrategy: 'Position as evolution, not replacement. Familiar interface with transformative capabilities.',
+    weaknesses: [
+      'No visual IDE or inline editing',
+      'Limited codebase navigation UX',
+      'Harder to adopt for full eng orgs',
+    ],
+    counterPoints: [
+      'Cursor combines agent capabilities with a full IDE — see changes inline before accepting',
+      'Familiar VS Code UX lowers org-wide rollout friction vs CLI-only tools',
+      'Composer and Tab cover both quick edits and multi-file agent workflows',
+    ],
+    winStrategy:
+      'Demo side-by-side: same task in Claude Code vs Cursor. Emphasize reviewability, diffs, and team-wide adoption path.',
   },
   {
     competitor: 'GitHub Copilot',
@@ -293,22 +368,31 @@ export const battleCards = [
     weaknesses: ['Limited context window', 'Only autocomplete, no chat', 'No multi-file editing'],
     counterPoints: [
       'Cursor understands your entire project, not just current file',
-      'Chat, edit, and compose - not just autocomplete',
+      'Chat, edit, and compose — not just autocomplete',
       'Agent mode for complex multi-step tasks',
     ],
     winStrategy: 'Demonstrate multi-file refactoring and context-aware suggestions. Show agent capabilities.',
   },
   {
-    competitor: 'JetBrains AI',
-    positioning: 'AI as afterthought vs. AI-native',
-    strengths: ['Deep language-specific features', 'Enterprise relationships', 'Refactoring tools'],
-    weaknesses: ['Heavy/slow IDE', 'AI bolted on to existing product', 'Per-language pricing'],
-    counterPoints: [
-      'Cursor is lightweight and fast like VS Code',
-      'AI-native architecture designed from ground up',
-      'Works across all languages with single subscription',
+    competitor: 'Windsurf',
+    positioning: 'AI IDE competitors — depth vs. polish',
+    strengths: [
+      'AI-native IDE positioning',
+      'Cascade flow for multi-step edits',
+      'Aggressive pricing for teams',
     ],
-    winStrategy: 'Speed comparison demo. Show AI features that JetBrains cannot match. Cross-language workflow.',
+    weaknesses: [
+      'Smaller enterprise footprint and references',
+      'Less mature admin / SSO story',
+      'Model flexibility can feel inconsistent',
+    ],
+    counterPoints: [
+      'Cursor is built on VS Code — zero retraining for the majority of developers',
+      'Stronger enterprise adoption and security posture for strategic accounts',
+      'Proven agent + tab stack with consistent model quality',
+    ],
+    winStrategy:
+      'Lead with enterprise credibility and VS Code compatibility. Run a head-to-head on a real account codebase.',
   },
 ]
 
@@ -319,7 +403,7 @@ export const discoveryQuestions = [
       { question: 'What IDE do most of your engineers use today?', purpose: 'Understand migration path' },
       { question: 'How do you currently handle code reviews?', purpose: 'Identify productivity gaps' },
       { question: 'What is your average PR cycle time?', purpose: 'Establish baseline metrics' },
-    ]
+    ],
   },
   {
     category: 'Pain Points',
@@ -327,7 +411,7 @@ export const discoveryQuestions = [
       { question: 'Where do engineers spend the most time that feels unproductive?', purpose: 'Surface pain points' },
       { question: 'How do new engineers ramp up on your codebase?', purpose: 'Onboarding friction' },
       { question: 'What happens when you need to refactor across multiple files?', purpose: 'Multi-file pain' },
-    ]
+    ],
   },
   {
     category: 'AI & Future',
@@ -335,7 +419,7 @@ export const discoveryQuestions = [
       { question: 'How is your team using AI coding assistants today?', purpose: 'Current AI adoption' },
       { question: 'What concerns do you have about AI and code security?', purpose: 'Address objections early' },
       { question: 'How do you envision AI changing your development workflow in 2 years?', purpose: 'Strategic alignment' },
-    ]
+    ],
   },
   {
     category: 'Decision Process',
@@ -343,6 +427,6 @@ export const discoveryQuestions = [
       { question: 'Who else would need to be involved in evaluating a tool like this?', purpose: 'Map stakeholders' },
       { question: 'How does your team typically evaluate and adopt new dev tools?', purpose: 'Understand buying process' },
       { question: 'What would success look like if you adopted Cursor?', purpose: 'Define success criteria' },
-    ]
+    ],
   },
 ]

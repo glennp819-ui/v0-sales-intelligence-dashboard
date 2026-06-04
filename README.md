@@ -22,6 +22,20 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Target accounts
+
+Use **Target Accounts** in the header to:
+
+- Edit and swap your **5 target account** slots
+- Click **Refresh latest intel** to reload prioritization, briefs, and detail panels
+
+Refresh behavior:
+
+- With `OPENAI_API_KEY` in `.env.local` (see `.env.example`), the app calls `/api/accounts/refresh` for live AI-generated account intelligence.
+- Without an API key, refresh uses bundled profiles when names match defaults (Anthropic, Stripe, etc.) and placeholders otherwise.
+
+Account names and the last refresh are stored in `localStorage`.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 ## Learn More

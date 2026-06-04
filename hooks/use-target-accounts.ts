@@ -30,6 +30,7 @@ interface RefreshResponse {
   accounts: Account[]
   refreshedAt: string
   source: string
+  aiEnabled?: boolean
   message?: string
   error?: string
 }
@@ -45,6 +46,7 @@ export function useTargetAccounts() {
   const [refreshingPovAccountId, setRefreshingPovAccountId] = useState<string | null>(null)
   const [lastRefreshedAt, setLastRefreshedAt] = useState<string | null>(null)
   const [refreshSource, setRefreshSource] = useState<string | null>(null)
+  const [aiRefreshEnabled, setAiRefreshEnabled] = useState<boolean | null>(null)
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -73,6 +75,11 @@ export function useTargetAccounts() {
       setRefreshSource(cache.source ?? null)
     }
     setHydrated(true)
+
+    fetch('/api/accounts/status')
+      .then((res) => res.json())
+      .then((data: { aiEnabled?: boolean }) => setAiRefreshEnabled(Boolean(data.aiEnabled)))
+      .catch(() => setAiRefreshEnabled(null))
   }, [])
 
   const persistAccounts = useCallback(
@@ -164,6 +171,7 @@ export function useTargetAccounts() {
       setAccounts(data.accounts)
       setLastRefreshedAt(data.refreshedAt)
       setRefreshSource(data.source)
+      setAiRefreshEnabled(data.aiEnabled ?? false)
       setStatusMessage(data.message ?? null)
       saveTargetNames(targetNames)
       saveAccountsCache({
@@ -302,6 +310,7 @@ export function useTargetAccounts() {
     refreshingPovAccountId,
     lastRefreshedAt,
     refreshSource,
+    aiRefreshEnabled,
     statusMessage,
     error,
     updateTargetName,

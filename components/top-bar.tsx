@@ -16,6 +16,7 @@ interface TopBarProps {
   isRefreshing: boolean
   lastRefreshedAt: string | null
   refreshSource: string | null
+  aiRefreshEnabled: boolean | null
   statusMessage: string | null
   refreshError: string | null
   onTargetNameChange: (index: number, value: string) => void
@@ -30,6 +31,7 @@ export function TopBar({
   isRefreshing,
   lastRefreshedAt,
   refreshSource,
+  aiRefreshEnabled,
   statusMessage,
   refreshError,
   onTargetNameChange,
@@ -53,6 +55,7 @@ export function TopBar({
           isRefreshing={isRefreshing}
           lastRefreshedAt={lastRefreshedAt}
           refreshSource={refreshSource}
+          aiRefreshEnabled={aiRefreshEnabled}
           statusMessage={statusMessage}
           error={refreshError}
           onNameChange={onTargetNameChange}

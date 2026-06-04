@@ -24,6 +24,7 @@ export default function Dashboard() {
     replacingStakeholderKey,
     lastRefreshedAt,
     refreshSource,
+    aiRefreshEnabled,
     statusMessage,
     error: refreshError,
     updateTargetName,
@@ -120,6 +121,7 @@ export default function Dashboard() {
           isRefreshing={isRefreshing}
           lastRefreshedAt={lastRefreshedAt}
           refreshSource={refreshSource}
+          aiRefreshEnabled={aiRefreshEnabled}
           statusMessage={statusMessage}
           refreshError={refreshError}
           onTargetNameChange={updateTargetName}

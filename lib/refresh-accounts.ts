@@ -23,7 +23,12 @@ export interface RefreshResult {
   accounts: Account[]
   refreshedAt: string
   source: RefreshSource
+  aiEnabled: boolean
   message?: string
+}
+
+export function isAiRefreshEnabled(): boolean {
+  return Boolean(process.env.OPENAI_API_KEY?.trim())
 }
 
 function normalizeName(name: string): string {
@@ -116,7 +121,7 @@ export function createStubAccount(name: string, slotIndex: number): Account {
 }
 
 function hasOpenAiKey(): boolean {
-  return Boolean(process.env.OPENAI_API_KEY?.trim())
+  return isAiRefreshEnabled()
 }
 
 async function refreshWithAi(name: string, slotIndex: number): Promise<Account> {
@@ -200,6 +205,7 @@ export async function refreshAccounts(names: string[]): Promise<RefreshResult> {
       accounts,
       refreshedAt,
       source: 'ai',
+      aiEnabled: true,
       message: 'Refreshed with live AI research, calibrated scores, and public-news POV.',
     }
   }
@@ -224,8 +230,10 @@ export async function refreshAccounts(names: string[]): Promise<RefreshResult> {
     accounts,
     refreshedAt,
     source: usedMock ? 'mock' : 'stub',
-    message:
-      'Set OPENAI_API_KEY in .env.local for live refresh. Using bundled profiles where available.',
+    aiEnabled: false,
+    message: usedMock
+      ? 'Live AI is off (no OPENAI_API_KEY on the server). Showing bundled demo data for known names only — add the key in Vercel → Environment Variables (Production), redeploy, then refresh again.'
+      : 'Live AI is off (no OPENAI_API_KEY on the server). Add it in Vercel → Environment Variables (Production), redeploy, then refresh again.',
   }
 }
 

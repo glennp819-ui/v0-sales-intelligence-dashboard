@@ -16,6 +16,7 @@ interface TargetAccountsPanelProps {
   isRefreshing: boolean
   lastRefreshedAt: string | null
   refreshSource: string | null
+  aiRefreshEnabled: boolean | null
   statusMessage: string | null
   error: string | null
   onNameChange: (index: number, value: string) => void
@@ -40,6 +41,7 @@ export function TargetAccountsPanel({
   isRefreshing,
   lastRefreshedAt,
   refreshSource,
+  aiRefreshEnabled,
   statusMessage,
   error,
   onNameChange,
@@ -187,7 +189,14 @@ export function TargetAccountsPanel({
           <p className="font-mono text-[10px] text-muted-foreground">
             Last refresh: {formatRefreshedAt(lastRefreshedAt)}
             {refreshSource ? ` · ${refreshSource}` : ''}
+            {aiRefreshEnabled === false && ' · live AI off'}
           </p>
+          {aiRefreshEnabled === false && (
+            <p className="text-xs text-amber-600 dark:text-amber-500">
+              Server has no OPENAI_API_KEY. Add it in Vercel → Settings → Environment Variables
+              (Production), redeploy, then refresh again.
+            </p>
+          )}
           {statusMessage && <p className="text-xs text-muted-foreground">{statusMessage}</p>}
           {error && <p className="text-xs text-destructive">{error}</p>}
           {importError && <p className="text-xs text-destructive">{importError}</p>}

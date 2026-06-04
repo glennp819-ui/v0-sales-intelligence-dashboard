@@ -1,7 +1,9 @@
 'use client'
 
 import { type Account, type CriteriaWeight } from '@/lib/data'
+import { scoreBarColor, scoreTextColor } from '@/lib/score-colors'
 import { cn } from '@/lib/utils'
+import { CompanyLogo } from '@/components/company-logo'
 
 interface AccountCardProps {
   account: Account
@@ -33,34 +35,24 @@ export function AccountCard({ account, score, rank, weights, onClick }: AccountC
 
   return (
     <button
+      type="button"
       onClick={onClick}
-      className="w-full rounded border border-border bg-card p-4 text-left transition-colors hover:border-primary/50"
+      className="w-full rounded border border-border bg-card p-4 text-left transition-colors hover:border-foreground/20"
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-xs text-muted-foreground">
-            #{rank}
-          </span>
+          <span className="font-mono text-xs text-muted-foreground">#{rank}</span>
+          <CompanyLogo name={account.name} website={account.details.website} className="size-8" />
           <div>
             <h3 className="font-medium text-foreground">{account.name}</h3>
-            <span className="text-xs text-muted-foreground">
-              {account.industry}
-            </span>
+            <span className="text-xs text-muted-foreground">{account.industry}</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              'rounded px-2 py-0.5 text-xs font-medium',
-              tier.color,
-              'text-background'
-            )}
-          >
+          <span className={cn('rounded px-2 py-0.5 text-xs font-medium', tier.color, 'text-background')}>
             {tier.label}
           </span>
-          <span className="font-mono text-2xl font-bold text-foreground">
-            {score}
-          </span>
+          <span className="font-mono text-2xl font-bold text-foreground">{score}</span>
         </div>
       </div>
       <div className="mt-4 flex h-2 gap-0.5 overflow-hidden rounded-sm">
@@ -71,19 +63,22 @@ export function AccountCard({ account, score, rank, weights, onClick }: AccountC
           return (
             <div
               key={id}
-              className="bg-primary/80"
+              className={cn('opacity-90', scoreBarColor(scoreValue))}
               style={{ width: `${contribution}%` }}
               title={`${weightMap[id]?.label}: ${scoreValue}`}
             />
           )
         })}
       </div>
-      <div className="mt-2 flex gap-2">
-        {scoreBreakdown.map(({ id, key }) => (
-          <span key={id} className="font-mono text-[10px] text-muted-foreground">
-            {weightMap[id]?.shortLabel}: {account.scores[key]}
-          </span>
-        ))}
+      <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1">
+        {scoreBreakdown.map(({ id, key }) => {
+          const scoreValue = account.scores[key]
+          return (
+            <span key={id} className={cn('font-mono text-[10px]', scoreTextColor(scoreValue))}>
+              {weightMap[id]?.shortLabel}: {scoreValue}
+            </span>
+          )
+        })}
       </div>
     </button>
   )

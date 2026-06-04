@@ -1,8 +1,8 @@
-import type { Section } from '@/app/page'
+import type { Section } from '@/lib/nav'
 import { TargetAccountsPanel } from '@/components/target-accounts-panel'
 
 const sectionTitles: Record<Section, string> = {
-  'prioritization': 'Prioritization',
+  prioritization: 'Prioritization',
   'icp-scorecard': 'ICP Scorecard',
   'battle-cards': 'Battle Cards',
   'discovery-bank': 'Discovery Bank',
@@ -35,14 +35,14 @@ export function TopBar({
   onRefreshAccounts,
 }: TopBarProps) {
   return (
-    <header className="flex h-14 items-center justify-between border-b border-border bg-background px-6">
-      <div className="flex items-center gap-4">
-        <h1 className="text-sm font-medium text-foreground">
+    <header className="relative z-10 flex h-[3.75rem] shrink-0 items-center justify-between border-b border-border bg-background/95 px-6 backdrop-blur-sm">
+      <div className="min-w-0">
+        <h1 className="text-sm font-medium tracking-[-0.01em] text-foreground">
           {sectionTitles[activeSection]}
         </h1>
-        <span className="text-xs text-muted-foreground">
-          PG Prioritization Command Center
-        </span>
+        <p className="mt-0.5 truncate text-xs text-muted-foreground">
+          PG Prioritization · Enterprise accounts
+        </p>
       </div>
       <div className="flex items-center gap-3">
         <TargetAccountsPanel
@@ -56,14 +56,6 @@ export function TopBar({
           onSwap={onSwapTargetNames}
           onRefresh={onRefreshAccounts}
         />
-        <div className="flex items-center gap-2 rounded border border-border px-2 py-1">
-          <span className="font-mono text-xs text-muted-foreground">
-            Built in
-          </span>
-          <span className="font-mono text-xs font-medium text-primary">
-            Cursor
-          </span>
-        </div>
       </div>
     </header>
   )

@@ -1,22 +1,8 @@
 'use client'
 
-import {
-  Target,
-  ClipboardList,
-  Swords,
-  HelpCircle,
-  FileText,
-} from 'lucide-react'
+import { navItems, type Section } from '@/lib/nav'
 import { cn } from '@/lib/utils'
-import type { Section } from '@/app/page'
-
-const navItems = [
-  { id: 'prioritization' as Section, label: 'Prioritization', icon: Target },
-  { id: 'icp-scorecard' as Section, label: 'ICP Scorecard', icon: ClipboardList },
-  { id: 'battle-cards' as Section, label: 'Battle Cards', icon: Swords },
-  { id: 'discovery-bank' as Section, label: 'Discovery Bank', icon: HelpCircle },
-  { id: 'account-briefs' as Section, label: 'Account Briefs', icon: FileText },
-]
+import { CursorBrand } from '@/components/cursor-brand'
 
 interface SidebarProps {
   activeSection: Section
@@ -25,29 +11,28 @@ interface SidebarProps {
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   return (
-    <aside className="flex w-56 flex-col border-r border-border bg-background">
-      <div className="flex h-14 items-center border-b border-border px-4">
-        <span className="font-mono text-sm font-medium tracking-tight text-foreground">
-          cursor
-        </span>
+    <aside className="flex w-60 shrink-0 flex-col border-r border-border bg-sidebar">
+      <div className="flex h-[3.75rem] items-center border-b border-border px-4">
+        <CursorBrand variant="full" />
       </div>
-      <nav className="flex-1 p-3">
-        <ul className="space-y-1">
+      <nav className="flex-1 p-2.5" aria-label="Main navigation">
+        <ul className="space-y-0.5">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = activeSection === item.id
             return (
               <li key={item.id}>
                 <button
+                  type="button"
                   onClick={() => onSectionChange(item.id)}
                   className={cn(
-                    'flex w-full items-center gap-3 rounded px-3 py-2 text-sm transition-colors',
+                    'flex w-full items-center gap-3 rounded-md border border-transparent py-2 pr-3 pl-2.5 text-sm transition-colors',
                     isActive
-                      ? 'bg-secondary text-foreground'
-                      : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
+                      ? 'border-border bg-secondary text-foreground shadow-[inset_2px_0_0_0_var(--foreground)]'
+                      : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4 shrink-0 opacity-80" />
                   <span>{item.label}</span>
                 </button>
               </li>
@@ -56,9 +41,10 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
         </ul>
       </nav>
       <div className="border-t border-border p-4">
-        <p className="text-xs text-muted-foreground">
-          Strategic AE Tools
+        <p className="text-[11px] leading-relaxed text-muted-foreground">
+          Strategic AE Command Center
         </p>
+        <p className="mt-0.5 text-[10px] text-muted-foreground/70">Cursor for Enterprise</p>
       </div>
     </aside>
   )

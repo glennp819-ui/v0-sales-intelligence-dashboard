@@ -48,44 +48,43 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Cursor-inspired dark theme - always dark */
+/* Cursor brand — warm dark UI (cursor.com / IDE) */
 :root {
-  --background: #0A0A0A;
-  --foreground: #FAFAFA;
-  --card: #111111;
-  --card-foreground: #FAFAFA;
-  --popover: #111111;
-  --popover-foreground: #FAFAFA;
-  --primary: #22D3EE;
-  --primary-foreground: #0A0A0A;
-  --secondary: #1F1F1F;
-  --secondary-foreground: #FAFAFA;
-  --muted: #1F1F1F;
-  --muted-foreground: #737373;
-  --accent: #22D3EE;
-  --accent-foreground: #0A0A0A;
-  --destructive: #EF4444;
-  --border: #1F1F1F;
-  --input: #1F1F1F;
-  --ring: #22D3EE;
-  --chart-1: #22D3EE;
-  --chart-2: #10B981;
-  --chart-3: #F59E0B;
+  --background: #0b0a09;
+  --foreground: #f7f7f4;
+  --card: #141413;
+  --card-foreground: #f7f7f4;
+  --popover: #141413;
+  --popover-foreground: #f7f7f4;
+  --primary: #eeede9;
+  --primary-foreground: #0b0a09;
+  --secondary: #1c1c1a;
+  --secondary-foreground: #f7f7f4;
+  --muted: #1c1c1a;
+  --muted-foreground: #8e8e8c;
+  --accent: #262625;
+  --accent-foreground: #f7f7f4;
+  --destructive: #ef4444;
+  --border: #2a2a28;
+  --input: #1c1c1a;
+  --ring: #eeede9;
+  --chart-1: #f7f7f4;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
   --chart-4: #737373;
   --chart-5: #525252;
-  --radius: 0.375rem;
-  --sidebar: #0A0A0A;
-  --sidebar-foreground: #FAFAFA;
-  --sidebar-primary: #22D3EE;
-  --sidebar-primary-foreground: #0A0A0A;
-  --sidebar-accent: #1F1F1F;
-  --sidebar-accent-foreground: #FAFAFA;
-  --sidebar-border: #1F1F1F;
-  --sidebar-ring: #22D3EE;
-  
-  /* Custom tier colors */
-  --tier-1: #10B981;
-  --tier-2: #F59E0B;
+  --radius: 0.5rem;
+  --sidebar: #0b0a09;
+  --sidebar-foreground: #f7f7f4;
+  --sidebar-primary: #eeede9;
+  --sidebar-primary-foreground: #0b0a09;
+  --sidebar-accent: #1c1c1a;
+  --sidebar-accent-foreground: #f7f7f4;
+  --sidebar-border: #2a2a28;
+  --sidebar-ring: #eeede9;
+
+  --tier-1: #10b981;
+  --tier-2: #f59e0b;
   --tier-3: #737373;
 }
 
@@ -99,4 +98,20 @@
   html {
     @apply font-sans;
   }
+}
+
+@layer components {
+  .cursor-brand-wordmark {
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Range inputs — Cursor-style neutral thumb */
+input[type='range']::-webkit-slider-thumb {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+input[type='range']::-moz-range-thumb {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
 }

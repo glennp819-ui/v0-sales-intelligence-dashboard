@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { stakeholderSchema } from '@/lib/stakeholder-schema'
+
 export const accountSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -20,18 +22,14 @@ export const accountSchema = z.object({
     funding: z.string(),
     techStack: z.array(z.string()).min(1).max(8),
     recentNews: z.array(z.string()).min(1).max(5),
-    champions: z
-      .array(
-        z.object({
-          name: z.string(),
-          title: z.string(),
-          linkedIn: z.string(),
-        })
-      )
-      .min(1)
-      .max(3),
+    stakeholderTargets: z.array(stakeholderSchema).length(5),
     discoveryQuestions: z.array(z.string()).min(2).max(5),
     battleNotes: z.string(),
+    pov: z.object({
+      whyAnything: z.string(),
+      whyNow: z.string(),
+      whyCursor: z.string(),
+    }),
   }),
 })
 

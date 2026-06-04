@@ -23,7 +23,7 @@ export function BattleCardsView() {
               <h3 className="text-lg font-medium text-foreground">
                 vs. {card.competitor}
               </h3>
-              <p className="mt-1 text-xs text-primary">
+              <p className="mt-1 text-xs text-foreground/80">
                 {card.positioning}
               </p>
             </div>

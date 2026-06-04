@@ -10,9 +10,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'PG Prioritization Command Center',
-  description: 'Sales Intelligence Dashboard for Cursor Strategic Account Executives',
-  generator: 'v0.app',
+  title: 'Cursor · Sales Intelligence',
+  description: 'Enterprise account prioritization and sales intelligence for Cursor strategic account executives.',
   icons: {
     icon: [
       {
@@ -22,10 +21,6 @@ export const metadata: Metadata = {
       {
         url: '/icon-dark-32x32.png',
         media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
       },
     ],
     apple: '/apple-icon.png',

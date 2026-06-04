@@ -58,16 +58,20 @@ export function IcpScorecardView() {
         </h3>
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
-            <span className="font-mono text-[#10B981]">Tier 1 (Strike Now)</span>: 
-            {" "}Score 80+ with strong signals across all high-weight criteria.
+            <span className="font-mono text-[#10B981]">Tier 1 (Strike Now)</span>:
+            {" "}Top portfolio rank (max 3) with calibrated score 70+ and strong high-weight signals.
           </p>
           <p>
-            <span className="font-mono text-[#F59E0B]">Tier 2 (Build & Warm)</span>: 
-            {" "}Score 60-79 with gaps in 1-2 areas but strong potential.
+            <span className="font-mono text-[#F59E0B]">Tier 2 (Build & Warm)</span>:
+            {" "}Solid fit with 1–2 gaps — nurture and prove value before a broad rollout.
           </p>
           <p>
-            <span className="font-mono text-[#737373]">Tier 3 (Monitor)</span>: 
-            {" "}Score below 60 or missing critical signals. Track for future.
+            <span className="font-mono text-[#737373]">Tier 3 (Monitor)</span>:
+            {" "}Weakest fit in the portfolio or missing critical signals — track for future triggers.
+          </p>
+          <p className="text-xs">
+            Scores use a skeptical calibration (~12% discount). Each refresh enforces max 3 Strike Now,
+            min 1 Build &amp; Warm, and min 1 Monitor.
           </p>
         </div>
       </div>

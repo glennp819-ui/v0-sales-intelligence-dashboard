@@ -1,5 +1,6 @@
 import type { Section } from '@/lib/nav'
 import { TargetAccountsPanel } from '@/components/target-accounts-panel'
+import type { TargetConfigExport } from '@/lib/target-accounts-storage'
 
 const sectionTitles: Record<Section, string> = {
   prioritization: 'Prioritization',
@@ -20,6 +21,7 @@ interface TopBarProps {
   onTargetNameChange: (index: number, value: string) => void
   onSwapTargetNames: (indexA: number, indexB: number) => void
   onRefreshAccounts: () => void
+  onImportTargets: (config: TargetConfigExport) => void
 }
 
 export function TopBar({
@@ -33,6 +35,7 @@ export function TopBar({
   onTargetNameChange,
   onSwapTargetNames,
   onRefreshAccounts,
+  onImportTargets,
 }: TopBarProps) {
   return (
     <header className="relative z-10 flex h-[3.75rem] shrink-0 items-center justify-between border-b border-border bg-background/95 px-6 backdrop-blur-sm">
@@ -55,6 +58,7 @@ export function TopBar({
           onNameChange={onTargetNameChange}
           onSwap={onSwapTargetNames}
           onRefresh={onRefreshAccounts}
+          onImport={onImportTargets}
         />
       </div>
     </header>

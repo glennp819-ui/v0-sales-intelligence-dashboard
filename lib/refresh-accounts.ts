@@ -14,7 +14,8 @@ import {
 export const TARGET_ACCOUNT_SLOTS = 5
 export const STAKEHOLDER_TARGET_COUNT = 5
 
-export const DEFAULT_TARGET_NAMES = mockAccounts.map((a) => a.name)
+/** v0 demo companies — only used to match and clear legacy saved defaults */
+export const LEGACY_DEMO_TARGET_NAMES = mockAccounts.map((a) => a.name)
 
 export type RefreshSource = 'ai' | 'mock' | 'stub'
 
@@ -180,7 +181,7 @@ export function sanitizeTargetNames(names: string[]): string[] {
 
   return padded.slice(0, TARGET_ACCOUNT_SLOTS).map((name, index) => {
     const trimmed = name.trim()
-    return trimmed || DEFAULT_TARGET_NAMES[index] || `Account ${index + 1}`
+    return trimmed || `Account ${index + 1}`
   })
 }
 

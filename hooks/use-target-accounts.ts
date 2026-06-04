@@ -2,17 +2,29 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { mockAccounts, type Account } from '@/lib/data'
-import { TARGET_ACCOUNT_SLOTS } from '@/lib/refresh-accounts'
+import type { Account } from '@/lib/data'
 import {
+  emptyTargetNames,
+  hasCustomTargetNames,
+  importTargetConfig,
   loadAccountsCache,
   loadTargetNames,
   saveAccountsCache,
   saveTargetNames,
   SCORING_VERSION,
+  type TargetConfigExport,
   updateCachedAccount,
 } from '@/lib/target-accounts-storage'
 import { calibrateAccountPortfolio } from '@/lib/tier-calibration'
+
+function getInitialAccounts(): Account[] {
+  if (typeof window === 'undefined') return []
+  const cache = loadAccountsCache()
+  if (!cache?.accounts?.length) return []
+  return cache.scoringVersion === SCORING_VERSION
+    ? cache.accounts
+    : calibrateAccountPortfolio(cache.accounts)
+}
 
 interface RefreshResponse {
   accounts: Account[]
@@ -25,9 +37,9 @@ interface RefreshResponse {
 export function useTargetAccounts() {
   const [hydrated, setHydrated] = useState(false)
   const [targetNames, setTargetNames] = useState<string[]>(() =>
-    Array(TARGET_ACCOUNT_SLOTS).fill('')
+    typeof window !== 'undefined' ? loadTargetNames() : emptyTargetNames()
   )
-  const [accounts, setAccounts] = useState<Account[]>(() => calibrateAccountPortfolio(mockAccounts))
+  const [accounts, setAccounts] = useState<Account[]>(() => getInitialAccounts())
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [replacingStakeholderKey, setReplacingStakeholderKey] = useState<string | null>(null)
   const [refreshingPovAccountId, setRefreshingPovAccountId] = useState<string | null>(null)
@@ -104,7 +116,34 @@ export function useTargetAccounts() {
     })
   }, [])
 
+  const importTargets = useCallback((config: TargetConfigExport) => {
+    importTargetConfig(config)
+    const names = loadTargetNames()
+    const cache = loadAccountsCache()
+    setTargetNames(names)
+    if (cache?.accounts?.length) {
+      const nextAccounts =
+        cache.scoringVersion === SCORING_VERSION
+          ? cache.accounts
+          : calibrateAccountPortfolio(cache.accounts)
+      setAccounts(nextAccounts)
+      setLastRefreshedAt(cache.refreshedAt)
+      setRefreshSource(cache.source ?? null)
+    } else {
+      setAccounts([])
+      setLastRefreshedAt(null)
+      setRefreshSource(null)
+    }
+    setStatusMessage('Imported target accounts from backup.')
+    setError(null)
+  }, [])
+
   const refreshAccounts = useCallback(async () => {
+    if (!hasCustomTargetNames(targetNames)) {
+      setError('Add at least one target company name before refreshing.')
+      return
+    }
+
     setIsRefreshing(true)
     setError(null)
     setStatusMessage(null)
@@ -267,6 +306,7 @@ export function useTargetAccounts() {
     error,
     updateTargetName,
     swapTargetNames,
+    importTargets,
     refreshAccounts,
     updateAccount,
     replaceStakeholderTarget,

@@ -1,11 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { ArrowLeftRight, Loader2, RefreshCw, Settings2, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { TARGET_ACCOUNT_SLOTS } from '@/lib/refresh-accounts'
+import {
+  buildTargetConfigExport,
+  type TargetConfigExport,
+} from '@/lib/target-accounts-storage'
 
 interface TargetAccountsPanelProps {
   targetNames: string[]
@@ -17,6 +21,7 @@ interface TargetAccountsPanelProps {
   onNameChange: (index: number, value: string) => void
   onSwap: (indexA: number, indexB: number) => void
   onRefresh: () => void
+  onImport: (config: TargetConfigExport) => void
 }
 
 function formatRefreshedAt(iso: string | null): string {
@@ -40,8 +45,11 @@ export function TargetAccountsPanel({
   onNameChange,
   onSwap,
   onRefresh,
+  onImport,
 }: TargetAccountsPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [importError, setImportError] = useState<string | null>(null)
+  const importInputRef = useRef<HTMLInputElement>(null)
   const [mounted, setMounted] = useState(false)
   const [panelStyle, setPanelStyle] = useState<{ top: number; right: number }>({
     top: 0,
@@ -92,6 +100,32 @@ export function TargetAccountsPanel({
     onRefresh()
   }
 
+  const handleExport = () => {
+    const payload = buildTargetConfigExport()
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `target-accounts-${new Date().toISOString().slice(0, 10)}.json`
+    anchor.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handleImportFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+
+    try {
+      const text = await file.text()
+      const parsed = JSON.parse(text) as TargetConfigExport
+      onImport(parsed)
+      setImportError(null)
+    } catch {
+      setImportError('Could not read that file. Use a JSON export from this app.')
+    }
+  }
+
   const panel = isOpen && mounted ? (
     <>
       <button
@@ -112,7 +146,7 @@ export function TargetAccountsPanel({
               5 Target Accounts
             </h2>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              Edit names, swap slots, then refresh for latest intel.
+              Names save automatically in this browser. Export a backup to move them elsewhere.
             </p>
           </div>
           <button
@@ -156,6 +190,29 @@ export function TargetAccountsPanel({
           </p>
           {statusMessage && <p className="text-xs text-muted-foreground">{statusMessage}</p>}
           {error && <p className="text-xs text-destructive">{error}</p>}
+          {importError && <p className="text-xs text-destructive">{importError}</p>}
+        </div>
+
+        <div className="mt-3 flex gap-2">
+          <Button type="button" variant="outline" size="sm" className="flex-1" onClick={handleExport}>
+            Export backup
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={() => importInputRef.current?.click()}
+          >
+            Import backup
+          </Button>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={handleImportFile}
+          />
         </div>
 
         <Button className="mt-3 w-full gap-2" onClick={handleRefresh} disabled={isRefreshing}>

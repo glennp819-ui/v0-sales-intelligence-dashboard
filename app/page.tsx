@@ -28,6 +28,7 @@ export default function Dashboard() {
     error: refreshError,
     updateTargetName,
     swapTargetNames,
+    importTargets,
     refreshAccounts,
     replaceStakeholderTarget,
     refreshAccountPov,
@@ -124,6 +125,7 @@ export default function Dashboard() {
           onTargetNameChange={updateTargetName}
           onSwapTargetNames={swapTargetNames}
           onRefreshAccounts={refreshAccounts}
+          onImportTargets={importTargets}
         />
         <main className="relative flex-1 overflow-auto p-6">
           {renderContent()}

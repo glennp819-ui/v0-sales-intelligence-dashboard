@@ -1,6 +1,6 @@
 allowBuilds:
-  msw: set this to true or false
-  sharp: set this to true or false
+  msw: false
+  sharp: true
 minimumReleaseAgeExclude:
   - '@ai-sdk/gateway@3.0.124'
   - ai@6.0.196

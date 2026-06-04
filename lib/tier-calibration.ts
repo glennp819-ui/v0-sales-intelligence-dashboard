@@ -8,7 +8,6 @@ import {
 /** ~12.5% reduction — cautious AE scoring lens */
 export const SCORE_SKEPTICISM_FACTOR = 0.875
 
-const STRIKE_NOW_MIN_SCORE = 70
 const MAX_STRIKE_NOW = 3
 const MIN_BUILD_WARM = 1
 const MIN_MONITOR = 1
@@ -31,11 +30,21 @@ export function calibrateScores(scores: Account['scores']): Account['scores'] {
   }
 }
 
-function initialTierForRank(rank: number, score: number, total: number): Tier {
+/** Rank-based tier slots: bottom = monitor, next = warm, top = strike (up to 3). */
+function initialTierForRank(rank: number, total: number): Tier {
   if (rank === total - 1) return 3
   if (rank === total - 2) return 2
-  if (rank < MAX_STRIKE_NOW && score >= STRIKE_NOW_MIN_SCORE) return 1
+  if (rank < MAX_STRIKE_NOW) return 1
   return 2
+}
+
+function targetStrikeCount(total: number): number {
+  if (total <= MIN_MONITOR + MIN_BUILD_WARM) return 0
+  return Math.min(MAX_STRIKE_NOW, total - MIN_BUILD_WARM - MIN_MONITOR)
+}
+
+function maxWarmCount(total: number): number {
+  return Math.max(MIN_BUILD_WARM, total - MAX_STRIKE_NOW - MIN_MONITOR)
 }
 
 function countTiers(tiers: Tier[]) {
@@ -49,6 +58,7 @@ function countTiers(tiers: Tier[]) {
 /** Enforce portfolio tier mix: ≤3 strike now, ≥1 build & warm, ≥1 monitor */
 function enforceTierMix(tiers: Tier[]): Tier[] {
   const next = [...tiers]
+  const total = next.length
   let { strike, warm, monitor } = countTiers(next)
 
   while (strike > MAX_STRIKE_NOW) {
@@ -75,6 +85,24 @@ function enforceTierMix(tiers: Tier[]): Tier[] {
     warm++
   }
 
+  const targetStrike = targetStrikeCount(total)
+  while (strike < targetStrike) {
+    const idx = next.findIndex((t) => t === 2)
+    if (idx === -1) break
+    next[idx] = 1
+    strike++
+    warm--
+  }
+
+  const warmCap = maxWarmCount(total)
+  while (warm > warmCap) {
+    const idx = next.lastIndexOf(2)
+    if (idx === -1) break
+    next[idx] = 3
+    warm--
+    monitor++
+  }
+
   return next
 }
 
@@ -92,7 +120,7 @@ export function assignPortfolioTiers(
     .sort((a, b) => b.score - a.score)
 
   const tiers = enforceTierMix(
-    ranked.map(({ score }, index) => initialTierForRank(index, score, ranked.length))
+    ranked.map((_, index) => initialTierForRank(index, ranked.length))
   )
 
   return ranked.map(({ account }, index) => ({

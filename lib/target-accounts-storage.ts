@@ -3,7 +3,7 @@ import { DEFAULT_TARGET_NAMES, TARGET_ACCOUNT_SLOTS } from '@/lib/refresh-accoun
 
 const NAMES_KEY = 'si-target-account-names'
 const CACHE_KEY = 'si-accounts-cache'
-export const SCORING_VERSION = 2
+export const SCORING_VERSION = 3
 
 export interface AccountsCache {
   accounts: Account[]

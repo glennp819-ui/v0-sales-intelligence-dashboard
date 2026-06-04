@@ -16,7 +16,8 @@ import { BattleCardsView } from '@/components/views/battle-cards'
 import { DiscoveryBankView } from '@/components/views/discovery-bank'
 import { AccountBriefsView } from '@/components/views/account-briefs'
 import { AccountDetailPanel } from '@/components/account-detail-panel'
-import { mockAccounts, defaultWeights, type Account, type CriteriaWeight } from '@/lib/data'
+import { useTargetAccounts } from '@/hooks/use-target-accounts'
+import { defaultWeights, type Account, type CriteriaWeight } from '@/lib/data'
 
 export type Section = 'prioritization' | 'icp-scorecard' | 'battle-cards' | 'discovery-bank' | 'account-briefs'
 
@@ -29,6 +30,19 @@ export const navItems = [
 ]
 
 export default function Dashboard() {
+  const {
+    targetNames,
+    accounts,
+    isRefreshing,
+    lastRefreshedAt,
+    refreshSource,
+    statusMessage,
+    error: refreshError,
+    updateTargetName,
+    swapTargetNames,
+    refreshAccounts,
+  } = useTargetAccounts()
+
   const [activeSection, setActiveSection] = useState<Section>('prioritization')
   const [weights, setWeights] = useState<CriteriaWeight[]>(defaultWeights)
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
@@ -49,7 +63,7 @@ export default function Dashboard() {
       case 'prioritization':
         return (
           <PrioritizationView
-            accounts={mockAccounts}
+            accounts={accounts}
             weights={weights}
             onWeightsChange={setWeights}
             onAccountSelect={handleAccountSelect}
@@ -64,7 +78,7 @@ export default function Dashboard() {
       case 'account-briefs':
         return (
           <AccountBriefsView
-            accounts={mockAccounts}
+            accounts={accounts}
             weights={weights}
             onAccountSelect={handleAccountSelect}
           />
@@ -81,7 +95,18 @@ export default function Dashboard() {
         onSectionChange={setActiveSection}
       />
       <div className="flex flex-1 flex-col overflow-hidden">
-        <TopBar activeSection={activeSection} />
+        <TopBar
+          activeSection={activeSection}
+          targetNames={targetNames}
+          isRefreshing={isRefreshing}
+          lastRefreshedAt={lastRefreshedAt}
+          refreshSource={refreshSource}
+          statusMessage={statusMessage}
+          refreshError={refreshError}
+          onTargetNameChange={updateTargetName}
+          onSwapTargetNames={swapTargetNames}
+          onRefreshAccounts={refreshAccounts}
+        />
         <main className="flex-1 overflow-auto p-6">
           {renderContent()}
         </main>

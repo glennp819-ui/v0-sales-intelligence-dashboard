@@ -1,6 +1,6 @@
 'use client'
 
-import { X, ExternalLink, Linkedin, ArrowRight } from 'lucide-react'
+import { X, ExternalLink, Link2, ArrowRight } from 'lucide-react'
 import { type Account, type CriteriaWeight, calculateTotalScore } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
@@ -171,7 +171,7 @@ export function AccountDetailPanel({ account, weights, isOpen, onClose }: Accoun
                     rel="noopener noreferrer"
                     className="rounded p-1 text-muted-foreground hover:bg-secondary hover:text-primary"
                   >
-                    <Linkedin className="h-4 w-4" />
+                    <Link2 className="h-4 w-4" />
                   </a>
                 </div>
               ))}
